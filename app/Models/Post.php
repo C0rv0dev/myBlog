@@ -7,7 +7,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -68,11 +68,9 @@ class Post extends Model
         return $this->morphMany(Comment::class, 'item');
     }
 
-    protected function slug(): Attribute
-    {
-        return Attribute::make(
-            get: fn ($value) => ucfirst($value),
-            set: fn ($value) => strtolower($value)
-        );
-    }
+	public function setNameAttribute($value)
+	{
+		$this->attributes['name'] = $value;
+		$this->attributes['slug'] = Str::slug($value);
+	}
 }
