@@ -17,6 +17,6 @@ class Image extends Model
 
     public function image_post()
     {
-        return $this->belongsToMany(Post::class);
+        return $this->belongsToMany(Post::class)->withTimestamps();
     }
 }
