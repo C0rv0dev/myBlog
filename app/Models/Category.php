@@ -7,56 +7,52 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * Class Comment
+ * Class Category
  * 
  * @property int $id
- * @property int $user_id
- * @property string $item_type
- * @property int $item_id
- * @property int $stars
- * @property string $content
+ * @property string $name
+ * @property string $slug
+ * @property string $description
  * @property bool $status
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property string|null $deleted_at
  * 
- * @property User $user
+ * @property Collection|Post[] $posts
  *
  * @package App\Models
  */
-class Comment extends Model
+class Category extends Model
 {
 	use SoftDeletes, HasFactory;
-	protected $table = 'comments';
+	protected $table = 'categories';
 
 	protected $casts = [
-		'user_id' => 'int',
-		'item_id' => 'int',
-		'stars' => 'int',
 		'status' => 'bool'
 	];
 
 	protected $fillable = [
-		'user_id',
-		'item_type',
-		'item_id',
-		'stars',
-		'content',
+		'name',
+		'slug',
+		'description',
 		'status'
 	];
 
-	public function user()
+	public function posts()
 	{
-		return $this->belongsTo(User::class);
+		return $this->hasMany(Post::class);
 	}
 
-	public function item()
+	public function SetNameAttribute($value)
 	{
-		return $this->morphTo();
+		$this->attributes['name'] = $value;
+		$this->attributes['slug'] = Str::slug($value);
 	}
 }
