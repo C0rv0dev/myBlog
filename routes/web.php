@@ -20,4 +20,6 @@ Route::get('/dashboard', [HomeController::class, 'dashboard'])
 ->middleware('verified')
 -> name('dashboard');
 
+Route::get('/search/{params?}', [HomeController::class, 'search'])->name('search');
+
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
